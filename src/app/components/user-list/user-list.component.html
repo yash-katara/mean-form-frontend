@@ -1,0 +1,34 @@
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h4 class="mb-4 text-center">Registered Users</h4>
+
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Predicted Age</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.age || 'N/A' }}</td>
+            <td>
+              <button class="btn btn-sm btn-success me-2" (click)="downloadPDF(user._id!)">Download PDF</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteUser(user._id!)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="users.length === 0" class="text-center mt-3">
+      No users found.
+    </div>
+  </div>
+</div>
+

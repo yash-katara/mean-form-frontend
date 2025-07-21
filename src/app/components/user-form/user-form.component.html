@@ -1,0 +1,104 @@
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h4 class="mb-4 text-center">User Registration Form</h4>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Full Name</label>
+          <input type="text" class="form-control" formControlName="fullName" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Email</label>
+          <input type="email" class="form-control" formControlName="email" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Phone Number</label>
+          <input type="text" class="form-control" formControlName="phoneNumber" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Date of Birth</label>
+          <input type="date" class="form-control" formControlName="dateOfBirth" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Gender</label>
+          <select class="form-select" formControlName="gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Occupation</label>
+          <select class="form-select" formControlName="occupation">
+            <option value="">Select</option>
+            <option>Student</option>
+            <option>Engineer</option>
+            <option>Doctor</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Annual Income</label>
+          <input type="number" class="form-control" formControlName="annualIncome" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Zip Code</label>
+          <input type="text" class="form-control" formControlName="zipCode" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Country</label>
+          <select class="form-select" formControlName="country" (change)="onCountryChange()">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countryList">{{ country }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>State</label>
+          <select class="form-select" formControlName="state" (change)="onStateChange()">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states">{{ state }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>City</label>
+          <select class="form-select" formControlName="city">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities">{{ city }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Address Line 1</label>
+          <input type="text" class="form-control" formControlName="addressLine1" />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Address Line 2</label>
+          <input type="text" class="form-control" formControlName="addressLine2" />
+        </div>
+
+        <div class="col-md-12 mb-4">
+          <label>Signature</label><br />
+          <canvas #canvas width="300" height="100" class="border rounded shadow-sm"
+            style="cursor: crosshair;" (mouseup)="captureSignature(canvas.toDataURL())"></canvas>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary px-5" type="submit" [disabled]="form.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
