@@ -1,7 +1,95 @@
+// import { Component, OnInit } from '@angular/core';
+// import { UserService } from '../../services/user.service';
+// import { Router } from '@angular/router';
+// import { FormBuilder, Validators } from '@angular/forms';
+// import { User } from 'src/app/models/user.model';
+
+// @Component({
+//   selector: 'app-user-form',
+//   templateUrl: './user-form.component.html',
+//   styleUrls: ['./user-form.component.css']
+// })
+// export class UserFormComponent implements OnInit {
+//    form = this.fb.group({
+//     fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+//     email: ['', [Validators.required, Validators.email]],
+//     phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+//     dateOfBirth: ['', Validators.required],
+//     gender: ['', Validators.required],
+//     addressLine1: ['', [Validators.required, Validators.maxLength(100)]],
+//     addressLine2: ['', Validators.maxLength(100)],
+//     country: ['', Validators.required],
+//     state: ['', Validators.required],
+//     city: ['', Validators.required],
+//     zipCode: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{5,6}$/)]],
+//     occupation: ['', Validators.required],
+//     annualIncome: [''],
+//     signature: ['', Validators.required]
+//   });
+
+//   countryStateCity = {
+//     India: {
+//       Maharashtra: ['Mumbai', 'Pune', 'Nagpur'],
+//       Delhi: ['New Delhi', 'Noida', 'Gurgaon'],
+//       Karnataka: ['Bangalore', 'Mysore', 'Mangalore']
+//     },
+//     USA: {
+//       Texas: ['Houston', 'Austin', 'Dallas'],
+//       California: ['Los Angeles', 'San Francisco', 'San Diego'],
+//       NewYork: ['New York City', 'Buffalo', 'Rochester']
+//     },
+//     Canada: {
+//       Ontario: ['Toronto', 'Ottawa', 'Hamilton'],
+//       Quebec: ['Montreal', 'Quebec City', 'Laval'],
+//       BritishColumbia: ['Vancouver', 'Victoria', 'Kelowna']
+//     }
+//   };
+
+//   states: string[] = [];
+//   cities: string[] = [];
+//    countryList: string[] = [];
+
+//   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {}
+
+//   ngOnInit(): void {
+//     this.countryList = Object.keys(this.countryStateCity);
+//   }
+
+//   onCountryChange() {
+//     const country = this.form.get('country')?.value;
+//    this.states = country ? Object.keys(this.countryStateCity[country]) : [];
+//     this.form.get('state')?.setValue('');
+//     this.cities = [];
+//   }
+
+//   onStateChange() {
+//     const country = this.form.get('country')?.value;
+//     const state = this.form.get('state')?.value;
+//     this.cities = country ? this.countryStateCity[country][state] || [] : [];
+//     this.form.get('city')?.setValue('');
+//   }
+
+//   captureSignature(event: any) {
+//     this.form.get('signature')?.setValue(event);
+//   }
+
+//   onSubmit() {
+//     if (this.form.valid) {
+//       this.userService.createUser(this.form.value as User).subscribe(() => {
+//         alert('Form submitted!');
+//         this.router.navigate(['/users']);
+//       });
+//     }
+//   }
+
+// }
+
+
+
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -10,7 +98,8 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
-   form = this.fb.group({
+
+  form = this.fb.group({
     fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     email: ['', [Validators.required, Validators.email]],
     phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
@@ -27,7 +116,12 @@ export class UserFormComponent implements OnInit {
     signature: ['', Validators.required]
   });
 
-  countryStateCity = {
+  // ✅ Inline type added to fix TS7053
+  countryStateCity: {
+    [country: string]: {
+      [state: string]: string[];
+    };
+  } = {
     India: {
       Maharashtra: ['Mumbai', 'Pune', 'Nagpur'],
       Delhi: ['New Delhi', 'Noida', 'Gurgaon'],
@@ -45,11 +139,15 @@ export class UserFormComponent implements OnInit {
     }
   };
 
+  countryList: string[] = [];
   states: string[] = [];
   cities: string[] = [];
-   countryList: string[] = [];
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.countryList = Object.keys(this.countryStateCity);
@@ -57,15 +155,15 @@ export class UserFormComponent implements OnInit {
 
   onCountryChange() {
     const country = this.form.get('country')?.value;
-   // this.states = country ? Object.keys(this.countryStateCity[country]) : [];
+    this.states = country ? Object.keys(this.countryStateCity[country]) : [];
     this.form.get('state')?.setValue('');
     this.cities = [];
   }
 
   onStateChange() {
     const country = this.form.get('country')?.value;
-    const state = this.form.get('state')?.value;
-   // this.cities = country ? this.countryStateCity[country][state] || [] : [];
+    const state = this.form.get('state')?.value?? '';
+    this.cities = country ? this.countryStateCity[country][state] || [] : [];
     this.form.get('city')?.setValue('');
   }
 
@@ -81,5 +179,4 @@ export class UserFormComponent implements OnInit {
       });
     }
   }
-
 }
