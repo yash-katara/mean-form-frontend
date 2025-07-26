@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<!-- <div class="container mt-5">
   <div class="card shadow p-4">
     <h4 class="mb-4 text-center">User Registration Form</h4>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -88,7 +88,7 @@
           <input type="text" class="form-control" formControlName="addressLine2" />
         </div>
 
-        <!-- Signature Section -->
+        
         <div class="col-md-12 mb-4">
           <label>Signature</label><br />
           <canvas #canvas width="400" height="150" class="border rounded shadow-sm" style="cursor: crosshair;"></canvas>
@@ -101,11 +101,192 @@
             <img [src]="imageData" width="200" />
           </div>
         </div>
-      </div> <!-- row closed properly -->
+      </div> 
 
       <div class="text-center">
         <button class="btn btn-primary px-5" type="submit" [disabled]="form.invalid">Submit</button>
       </div>
+    </form>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h4 class="mb-4 text-center">User Registration Form</h4>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+
+        <!-- Full Name -->
+        <div class="col-md-6 mb-3">
+          <label>Full Name</label>
+          <input type="text" class="form-control" formControlName="fullName" />
+          <div *ngIf="form.get('fullName')?.errors && (form.get('fullName')?.touched || submitted)" class="text-danger small">
+            <div *ngIf="form.get('fullName')?.errors?.['required']">Full Name is required.</div>
+            <div *ngIf="form.get('fullName')?.errors?.['minlength']">Minimum 2 characters.</div>
+            <div *ngIf="form.get('fullName')?.errors?.['maxlength']">Maximum 50 characters.</div>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6 mb-3">
+          <label>Email</label>
+          <input type="email" class="form-control" formControlName="email" />
+          <div *ngIf="form.get('email')?.errors && (form.get('email')?.touched || submitted)" class="text-danger small">
+            <div *ngIf="form.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="form.get('email')?.errors?.['email']">Invalid email format.</div>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6 mb-3">
+          <label>Phone Number</label>
+          <input type="text" class="form-control" formControlName="phoneNumber" />
+          <div *ngIf="form.get('phoneNumber')?.errors && (form.get('phoneNumber')?.touched || submitted)" class="text-danger small">
+            <div *ngIf="form.get('phoneNumber')?.errors?.['required']">Phone Number is required.</div>
+            <div *ngIf="form.get('phoneNumber')?.errors?.['pattern']">Phone must be 10 digits.</div>
+          </div>
+        </div>
+
+        <!-- DOB -->
+        <div class="col-md-6 mb-3">
+          <label>Date of Birth</label>
+          <input type="date" class="form-control" formControlName="dateOfBirth" />
+          <div *ngIf="form.get('dateOfBirth')?.errors?.['required'] && (form.get('dateOfBirth')?.touched || submitted)" class="text-danger small">
+            Date of Birth is required.
+          </div>
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-6 mb-3">
+          <label>Gender</label>
+          <select class="form-select" formControlName="gender">
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+          <div *ngIf="form.get('gender')?.errors?.['required'] && (form.get('gender')?.touched || submitted)" class="text-danger small">
+            Gender is required.
+          </div>
+        </div>
+
+        <!-- Occupation -->
+        <div class="col-md-6 mb-3">
+          <label>Occupation</label>
+          <select class="form-select" formControlName="occupation">
+            <option value="">Select</option>
+            <option>Student</option>
+            <option>Engineer</option>
+            <option>Doctor</option>
+            <option>Other</option>
+          </select>
+          <div *ngIf="form.get('occupation')?.errors?.['required'] && (form.get('occupation')?.touched || submitted)" class="text-danger small">
+            Occupation is required.
+          </div>
+        </div>
+
+        <!-- Annual Income -->
+        <div class="col-md-6 mb-3">
+          <label>Annual Income</label>
+          <input type="number" class="form-control" formControlName="annualIncome" />
+        </div>
+
+        <!-- Zip Code -->
+        <div class="col-md-6 mb-3">
+          <label>Zip Code</label>
+          <input type="text" class="form-control" formControlName="zipCode" />
+          <div *ngIf="form.get('zipCode')?.errors && (form.get('zipCode')?.touched || submitted)" class="text-danger small">
+            <div *ngIf="form.get('zipCode')?.errors?.['required']">Zip Code is required.</div>
+            <div *ngIf="form.get('zipCode')?.errors?.['pattern']">Must be 5–6 alphanumeric characters.</div>
+          </div>
+        </div>
+
+        <!-- Country -->
+        <div class="col-md-6 mb-3">
+          <label>Country</label>
+          <select class="form-select" formControlName="country" (change)="onCountryChange()">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countryList">{{ country }}</option>
+          </select>
+          <div *ngIf="form.get('country')?.errors?.['required'] && (form.get('country')?.touched || submitted)" class="text-danger small">
+            Country is required.
+          </div>
+        </div>
+
+        <!-- State -->
+        <div class="col-md-6 mb-3">
+          <label>State</label>
+          <select class="form-select" formControlName="state" (change)="onStateChange()">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states">{{ state }}</option>
+          </select>
+          <div *ngIf="form.get('state')?.errors?.['required'] && (form.get('state')?.touched || submitted)" class="text-danger small">
+            State is required.
+          </div>
+        </div>
+
+        <!-- City -->
+        <div class="col-md-6 mb-3">
+          <label>City</label>
+          <select class="form-select" formControlName="city">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities">{{ city }}</option>
+          </select>
+          <div *ngIf="form.get('city')?.errors?.['required'] && (form.get('city')?.touched || submitted)" class="text-danger small">
+            City is required.
+          </div>
+        </div>
+
+        <!-- Address Line 1 -->
+        <div class="col-md-6 mb-3">
+          <label>Address Line 1</label>
+          <input type="text" class="form-control" formControlName="addressLine1" />
+          <div *ngIf="form.get('addressLine1')?.errors && (form.get('addressLine1')?.touched || submitted)" class="text-danger small">
+            <div *ngIf="form.get('addressLine1')?.errors?.['required']">Address is required.</div>
+            <div *ngIf="form.get('addressLine1')?.errors?.['maxlength']">Max 100 characters.</div>
+          </div>
+        </div>
+
+        <!-- Address Line 2 -->
+        <div class="col-md-6 mb-3">
+          <label>Address Line 2</label>
+          <input type="text" class="form-control" formControlName="addressLine2" />
+          <div *ngIf="form.get('addressLine2')?.errors?.['maxlength'] && (form.get('addressLine2')?.touched || submitted)" class="text-danger small">
+            Max 100 characters.
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div class="col-md-12 mb-4">
+          <label>Signature</label><br />
+          <canvas #canvas width="400" height="150" class="border rounded shadow-sm" style="cursor: crosshair;"></canvas>
+          <div class="mt-2">
+            <button type="button" class="btn btn-sm btn-success me-2" (click)="save()">Save Signature</button>
+            <button type="button" class="btn btn-sm btn-danger" (click)="clear()">Clear</button>
+          </div>
+          <div *ngIf="imageData" class="mt-2">
+            <p class="fw-bold">Signature Preview:</p>
+            <img [src]="imageData" width="200" />
+          </div>
+          <div *ngIf="form.get('signature')?.errors?.['required'] && (form.get('signature')?.touched || submitted)" class="text-danger small">
+            Signature is required.
+          </div>
+        </div>
+
+      </div> <!-- row end -->
+
+      <div class="text-center">
+        <button class="btn btn-primary px-5" type="submit" [disabled]="form.invalid">Submit</button>
+      </div>
+
     </form>
   </div>
 </div>

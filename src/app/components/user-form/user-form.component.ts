@@ -59,6 +59,7 @@ export class UserFormComponent implements OnInit {
   countryList: string[] = [];
   states: string[] = [];
   cities: string[] = [];
+  submitted = false;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
   private drawing = false;
@@ -133,6 +134,7 @@ clear() {
 
   onSubmit() {
 
+  this.submitted = true;
   //   console.log("Form Submitted:", this.form.value);
   // console.log("Form Valid:", this.form.valid);
     if (this.form.valid) {
